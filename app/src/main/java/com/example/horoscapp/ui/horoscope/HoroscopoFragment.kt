@@ -11,10 +11,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.horoscapp.R
 import com.example.horoscapp.databinding.FragmentHoroscopoBinding
+import com.example.horoscapp.domain.model.HoroscopeInfo
+import com.example.horoscapp.domain.model.HoroscopeModel
 import com.example.horoscapp.ui.horoscope.adapter.HoroscopoAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -50,11 +53,23 @@ class HoroscopoFragment : Fragment() {
 
     private fun initRecyclerView() {
         horoscopoAdapter = HoroscopoAdapter(onItemSelected = {
-            Toast.makeText(
-                context,
-                getString(it.name),
-                Toast.LENGTH_LONG
-            ).show()
+            val type = when(it){
+                HoroscopeInfo.Aquario -> HoroscopeModel.Aquario
+                HoroscopeInfo.Aries -> HoroscopeModel.Aries
+                HoroscopeInfo.Cancer -> HoroscopeModel.Cancer
+                HoroscopeInfo.Capricornio -> HoroscopeModel.Capricornio
+                HoroscopeInfo.Escorpio -> HoroscopeModel.Escorpio
+                HoroscopeInfo.Geminis -> HoroscopeModel.Geminis
+                HoroscopeInfo.Leo -> HoroscopeModel.Leo
+                HoroscopeInfo.Libra -> HoroscopeModel.Libra
+                HoroscopeInfo.Piscis -> HoroscopeModel.Piscis
+                HoroscopeInfo.Sagitario -> HoroscopeModel.Sagitario
+                HoroscopeInfo.Tauro -> HoroscopeModel.Tauro
+                HoroscopeInfo.Virgo -> HoroscopeModel.Virgo
+            }
+            findNavController().navigate(
+                HoroscopoFragmentDirections.actionHoroscopoFragmentToHoroscopeDetailActivity(type)
+            )
         })
         binding.rvHoroscope.apply {
             layoutManager = GridLayoutManager(context, 2)

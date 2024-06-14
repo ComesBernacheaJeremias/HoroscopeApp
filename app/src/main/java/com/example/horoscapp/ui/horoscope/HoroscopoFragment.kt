@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +22,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HoroscopoFragment : Fragment() {
-    private val horoscopoViewModel by viewModels <HoroscopoViewModel>()
+    private val horoscopoViewModel by viewModels<HoroscopoViewModel>()
 
     private lateinit var horoscopoAdapter: HoroscopoAdapter
 
@@ -31,21 +32,30 @@ class HoroscopoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initUI()
     }
-    private fun initUI(){
+
+    private fun initUI() {
         initUIState()
         initRecyclerView()
     }
-    private fun initUIState(){
+
+    private fun initUIState() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                horoscopoViewModel.horoscope.collect{
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                horoscopoViewModel.horoscope.collect {
                     horoscopoAdapter.updateList(it)
                 }
             }
         }
     }
-    private fun initRecyclerView(){
-        horoscopoAdapter = HoroscopoAdapter()
+
+    private fun initRecyclerView() {
+        horoscopoAdapter = HoroscopoAdapter(onItemSelected = {
+            Toast.makeText(
+                context,
+                getString(it.name),
+                Toast.LENGTH_LONG
+            ).show()
+        })
         binding.rvHoroscope.apply {
             layoutManager = GridLayoutManager(context, 2)
             adapter = horoscopoAdapter

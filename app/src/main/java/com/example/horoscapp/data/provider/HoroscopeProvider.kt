@@ -1,4 +1,4 @@
-package com.example.horoscapp.data.providers
+package com.example.horoscapp.data.provider
 
 import com.example.horoscapp.domain.model.HoroscopeInfo
 import com.example.horoscapp.domain.model.HoroscopeInfo.*
